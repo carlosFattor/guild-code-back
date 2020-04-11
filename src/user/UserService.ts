@@ -1,6 +1,6 @@
 import axios from "axios";
 import User from "./UserModel";
-import { IUser, IUserDocument } from "./base/IUser";
+import { IUser } from "./base/IUser";
 import IGithubUser from "./base/IGithubUser";
 import HttpException from "../exceptions/HttpException";
 import { Environment } from "../Environment";
@@ -16,7 +16,7 @@ export default class UserService {
     try {
       return await User.find({});
     } catch (error) {
-      throw new Error(error.message);
+      throw new HttpException(404, error.message);
     }
   }
 
@@ -29,7 +29,7 @@ export default class UserService {
       }
       return user;
     } catch (error) {
-      throw new Error(error);
+      throw new HttpException(404, error.message);
     }
   }
 
@@ -39,7 +39,7 @@ export default class UserService {
       const data = await temp.save();
       return data;
     } catch (error) {
-      throw new Error(error);
+      throw new HttpException(404, error.message);
     }
   }
 
@@ -49,9 +49,9 @@ export default class UserService {
     return status.deletedCount || 0;
   }
 
-  async getGithubToken(github_token: string): Promise<string> {
+  async getGithubToken(githubToken: string): Promise<string> {
     try {
-      const URI = `https://github.com/login/oauth/access_token?client_id=${this.environment?.getClientId()}&client_secret=${this.environment?.getClientSecret()}&code=${github_token}`;
+      const URI = `https://github.com/login/oauth/access_token?client_id=${this.environment?.getClientId()}&client_secret=${this.environment?.getClientSecret()}&code=${githubToken}`;
       return await (
         await axios.post(URI, {
           headers: {
@@ -64,12 +64,12 @@ export default class UserService {
     }
   }
 
-  async getGithubUserInfo(github_token: string): Promise<IGithubUser> {
+  async getGithubUserInfo(githubToken: string): Promise<IGithubUser> {
     try {
-      const token = this.sanitizeToken(github_token);
+      const token = this.sanitizeToken(githubToken);
       console.log({ token });
       return await (
-        await axios.get(`https://api.github.com/user`, {
+        await axios.get("https://api.github.com/user", {
           headers: {
             Authorization: `token ${token}`,
           },
@@ -80,8 +80,8 @@ export default class UserService {
     }
   }
 
-  private sanitizeToken(github_token: string): string {
-    const token = github_token.split("=")[1];
+  private sanitizeToken(githubToken: string): string {
+    const token = githubToken.split("=")[1];
     return token.split("&")[0];
   }
 }

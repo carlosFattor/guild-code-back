@@ -1,11 +1,11 @@
-import { NextFunction, Response, Request } from 'express';
-import * as jwt from 'jsonwebtoken';
-import AuthenticationTokenMissingException from '../exceptions/AuthenticationTokenMissingException';
-import WrongAuthenticationTokenException from '../exceptions/WrongAuthenticationTokenException';
-import DataStoredInToken from '../types/dataStoredInToken';
-import RequestWithUser from '../types/requestWithUser.interface';
-import userModel from '../user/UserModel';
-import { Environment } from '../Environment'
+import { NextFunction, Response, Request } from "express";
+import * as jwt from "jsonwebtoken";
+import AuthenticationTokenMissingException from "../exceptions/AuthenticationTokenMissingException";
+import WrongAuthenticationTokenException from "../exceptions/WrongAuthenticationTokenException";
+import DataStoredInToken from "../types/dataStoredInToken";
+import RequestWithUser from "../types/requestWithUser.interface";
+import userModel from "../user/UserModel";
+import { Environment } from "../Environment";
 
 async function authMiddleware(request: Request, response: Response, next: NextFunction) {
   const secret = new Environment().getSecret();

@@ -1,4 +1,4 @@
-import * as dotenv from 'dotenv';
+import * as dotenv from "dotenv";
 
 export class Environment {
 
@@ -7,31 +7,31 @@ export class Environment {
   }
 
   public getPort(): number {
-    return (process.env.PORT as any) || 3000
+    return (process.env.PORT as any) || 3000;
   }
 
   public getMongoUser(): string | undefined {
-    return process.env.MONGO_USER
+    return process.env.MONGO_USER;
   }
 
   public getMongoPassword(): string | undefined {
-    return process.env.MONGO_PASSWORD
+    return process.env.MONGO_PASSWORD;
   }
 
   public getMongoPath(): string | undefined {
-    return process.env.MONGO_PATH
+    return process.env.MONGO_PATH;
   }
 
   public getSecret(): string {
-    return process.env.SECRET || ''
+    return process.env.SECRET || "";
   }
 
   public getClientId(): string {
-    return process.env.CLIENT_ID || ''
+    return process.env.CLIENT_ID || "";
   }
 
   public getClientSecret(): string {
-    return process.env.CLIENT_SECRET || ''
+    return process.env.CLIENT_SECRET || "";
   }
 
 }

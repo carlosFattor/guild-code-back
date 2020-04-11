@@ -1,4 +1,4 @@
-import HttpException from './HttpException';
+import HttpException from "./HttpException";
 
 export default class NotAuthorizedException extends HttpException {
   constructor() {

@@ -13,8 +13,7 @@
     "nodejs",
     "typescript",
     "docker",
-    "eslint",
-    "prettier"
+    "eslint"
   ],
   "dependencies": {
     "axios": "^0.19.2",

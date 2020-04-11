@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 /* eslint-disable no-underscore-dangle */
 import * as HttpStatus from "http-status-codes";
 import * as jwt from "jsonwebtoken";
@@ -30,7 +31,7 @@ export default class UserController {
       const user = await this.userService?.add(body);
       res.status(HttpStatus.CREATED).json(user);
     } catch (error) {
-      throw new Error("It was impossible create a new user");
+      throw new HttpException(404, "It was impossible create a new user");
     }
   }
 
@@ -81,7 +82,6 @@ export default class UserController {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
   private fillUser(gitInfo: IGithubUser): IUser {
     return {
       email: gitInfo.email,

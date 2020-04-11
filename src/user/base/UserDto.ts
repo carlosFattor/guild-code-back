@@ -6,10 +6,10 @@ import { IUser } from "./IUser";
 export class UserDto implements IUser {
 
   @IsEmail()
-  email = null;
+  email = "";
 
   @IsString()
-  firstName = null;
+  firstName = "";
 
   @IsString()
   lastName?: string;
