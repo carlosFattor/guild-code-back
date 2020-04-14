@@ -1,6 +1,6 @@
 interface TokenData {
+  refreshToken: string;
   token: string;
-  refreshToke: string;
 }
 
 export default TokenData;

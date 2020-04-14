@@ -9,7 +9,9 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "strict": true,
+  "alwaysStrict": false
   },
   "include": [
     "src/**/*"

@@ -6,11 +6,9 @@ import helmet from "helmet";
 import hpp from "hpp";
 import cors from "cors";
 import * as bodyParser from "body-parser";
-import cookieParser from "cookie-parser";
 import RateLimit from "express-rate-limit";
 import noCache from "nocache";
 import UserRouters from "./user/UserRouters";
-import errorMiddleware from "./middleware/ErrorMiddleware";
 
 export class ExpressServer {
 
@@ -23,8 +21,8 @@ export class ExpressServer {
 
     this.server = express();
 
-    this.setupStandardMiddlewares(this.server);
-    this.setupSecurityMiddlewares(this.server);
+    this.setupStandardMiddleware(this.server);
+    this.setupSecurityMiddleware(this.server);
 
     this.listen(this.server, port);
     this.server?.use("/api/v1", this.router);
@@ -39,10 +37,9 @@ export class ExpressServer {
     if (this.httpServer) this.httpServer.close();
   }
 
-  private setupStandardMiddlewares(server: Express) {
+  private setupStandardMiddleware(server: Express) {
     server.use(bodyParser.json());
     server.use(bodyParser.urlencoded({ extended: true }));
-    server.use(cookieParser());
     server.use(compress());
 
     const baseRateLimitingOptions = {
@@ -51,16 +48,17 @@ export class ExpressServer {
       message: "Our API is rate limited to a maximum of 1000 requests per 15 minutes, please lower your request rate"
     };
     server.use("/api/*", RateLimit(baseRateLimitingOptions));
-
   }
 
-  private setupSecurityMiddlewares(server: Express) {
+  private setupSecurityMiddleware(server: Express) {
 
     const options: cors.CorsOptions = {
-      allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "X-Access-Token", "Set-Cookie"],
-      credentials: true,
-      methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
-      preflightContinue: false
+      allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "X-Access-Token"],
+      origin: [
+        "http://localhost:4200",
+        "http://localhost:3000"
+      ],
+      methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE"
     };
 
     server.use(cors(options));
@@ -77,7 +75,7 @@ export class ExpressServer {
       })
     );
     server.use(noCache());
-    // server.use(errorMiddleware);
+    server.disable("x-powered-by");
   }
 
   loadRouters(router: Router) {

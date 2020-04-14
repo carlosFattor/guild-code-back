@@ -17,17 +17,14 @@
   ],
   "dependencies": {
     "axios": "^0.19.2",
-    "bluebird": "^3.7.2",
     "body-parser": "^1.19.0",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.11.1",
     "compression": "^1.7.4",
-    "cookie-parser": "^1.4.5",
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-rate-limit": "^5.1.1",
-    "express-session": "^1.17.0",
     "helmet": "^3.22.0",
     "hpp": "^0.2.3",
     "http-status-codes": "^1.4.0",
@@ -41,7 +38,7 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
-    "@types/axios": "^0.14.0",
+    "@types/bcrypt": "^3.0.0",
     "@types/body-parser": "^1.19.0",
     "@types/compression": "^1.7.0",
     "@types/cookie-parser": "^1.4.2",

@@ -1,7 +1,7 @@
 import { Document } from "mongoose";
 
 export interface IUser {
-  _id: string;
+  _id?: string;
   email: string;
   firstName: string;
   lastName?: string;
@@ -11,6 +11,7 @@ export interface IUser {
   gitId?: number;
   public_repos?: number;
   repos_url?: string;
+  tags?: string[];
 }
 
 export type IUserDocument = IUser & Document;

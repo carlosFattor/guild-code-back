@@ -1,8 +1,10 @@
-import mongoose from 'mongoose';
-import logger from '../logger/logger';
+import mongoose from "mongoose";
+import logger from "../logger/logger";
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
 (<any>mongoose).Promise = global.Promise;
 
+// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 interface IOnConnectedCallback {
   (): void;
 }
@@ -11,7 +13,7 @@ export default class MongoConnection {
 
   private readonly mongoUrl: string;
   private onConnectedCallback: IOnConnectedCallback | null = null;
-  private isConnectedBefore: boolean = false;
+  private isConnectedBefore = false;
 
   private readonly mongoConnectionOptions: mongoose.ConnectionOptions = {
     useNewUrlParser: true,
@@ -20,21 +22,22 @@ export default class MongoConnection {
   };
 
   constructor(mongoUrl: string) {
-    if (process.env.NODE_ENV === 'development') {
-      mongoose.set('debug', true);
+    if (process.env.NODE_ENV === "development") {
+      mongoose.set("debug", true);
     }
-
+    mongoose.set("useFindAndModify", false);
     this.mongoUrl = mongoUrl;
-    mongoose.connection.on('error', this.onError);
-    mongoose.connection.on('disconnected', this.onDisconnected);
-    mongoose.connection.on('connected', this.onConnected);
-    mongoose.connection.on('reconnected', this.onReconnected);
+    mongoose.connection.on("error", this.onError);
+    mongoose.connection.on("disconnected", this.onDisconnected);
+    mongoose.connection.on("connected", this.onConnected);
+    mongoose.connection.on("reconnected", this.onReconnected);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public close(onClosed: (err: any) => void) {
     logger.log({
-      level: 'info',
-      message: 'Closing the MongoDB connection'
+      level: "info",
+      message: "Closing the MongoDB connection"
     });
 
     mongoose.connection.close(onClosed);
@@ -47,15 +50,16 @@ export default class MongoConnection {
 
   private startConnection = () => {
     logger.log({
-      level: 'info',
+      level: "info",
       message: `Connecting to MongoDB at ${this.mongoUrl}`
     });
-    mongoose.connect(this.mongoUrl, this.mongoConnectionOptions).catch(() => { });
+    mongoose.connect(this.mongoUrl, this.mongoConnectionOptions)
+      .catch((error) => console.log({ error }));
   }
 
   private onConnected = () => {
     logger.log({
-      level: 'info',
+      level: "info",
       message: `Connected to MongoDB at ${this.mongoUrl}`
     });
     this.isConnectedBefore = true;
@@ -66,8 +70,8 @@ export default class MongoConnection {
 
   private onReconnected = () => {
     logger.log({
-      level: 'info',
-      message: 'Reconnected to MongoDB'
+      level: "info",
+      message: "Reconnected to MongoDB"
     });
     if (this.onConnectedCallback) {
       this.onConnectedCallback();
@@ -76,7 +80,7 @@ export default class MongoConnection {
 
   private onError = () => {
     logger.log({
-      level: 'error',
+      level: "error",
       message: `Could not connect to ${this.mongoUrl}`
     });
   };
@@ -87,8 +91,8 @@ export default class MongoConnection {
         this.startConnection();
       }, 2000);
       logger.log({
-        level: 'info',
-        message: 'Retrying mongo connection'
+        level: "info",
+        message: "Retrying mongo connection"
       });
     }
   };

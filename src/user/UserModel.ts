@@ -37,6 +37,9 @@ const UserSchema = new Schema({
   repos_url: {
     required: true,
     type: String,
+  },
+  tags: {
+    type: [String]
   }
 }, {
   timestamps: true,

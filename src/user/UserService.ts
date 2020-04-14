@@ -4,8 +4,10 @@ import { IUser } from "./base/IUser";
 import IGithubUser from "./base/IGithubUser";
 import HttpException from "../exceptions/HttpException";
 import { Environment } from "../Environment";
+import * as HttpStatus from "http-status-codes";
 
 export default class UserService {
+
   private environment: Environment | null = null;
 
   constructor() {
@@ -16,7 +18,7 @@ export default class UserService {
     try {
       return await User.find({});
     } catch (error) {
-      throw new HttpException(404, error.message);
+      throw new HttpException(HttpStatus.NOT_FOUND, error.message);
     }
   }
 
@@ -29,7 +31,7 @@ export default class UserService {
       }
       return user;
     } catch (error) {
-      throw new HttpException(404, error.message);
+      throw new HttpException(HttpStatus.NOT_FOUND, error.message);
     }
   }
 
@@ -39,7 +41,7 @@ export default class UserService {
       const data = await temp.save();
       return data;
     } catch (error) {
-      throw new HttpException(404, error.message);
+      throw new HttpException(HttpStatus.BAD_REQUEST, error.message);
     }
   }
 
@@ -67,7 +69,7 @@ export default class UserService {
   async getGithubUserInfo(githubToken: string): Promise<IGithubUser> {
     try {
       const token = this.sanitizeToken(githubToken);
-      console.log({ token });
+
       return await (
         await axios.get("https://api.github.com/user", {
           headers: {
@@ -76,7 +78,18 @@ export default class UserService {
         })
       ).data;
     } catch (error) {
-      throw new HttpException(403, "Token invalid");
+      throw new HttpException(HttpStatus.FORBIDDEN, "Token invalid");
+    }
+  }
+
+  async updateTags(email: string, tags: [string]): Promise<string[]> {
+    try {
+      const query = { email };
+      const doc = await User.findOneAndUpdate(query, { tags });
+      return doc.tags;
+
+    } catch (error) {
+      throw new HttpException(HttpStatus.CONFLICT, "Was not possible to update tag\'s!");
     }
   }
 

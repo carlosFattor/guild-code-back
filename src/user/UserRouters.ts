@@ -21,11 +21,11 @@ export default class UserRouters implements BaseRouters {
     return this;
   }
   loadRouter(): void {
-    this.router?.get(this.path, authMiddleware, async (req, res) => this.userController?.fetchUsers(req, res));
+    this.router?.get(this.path, async (req, res) => this.userController?.fetchUsers(req, res));
+    this.router?.put(`${this.path}/tags`, async (req, res) => this.userController.addTags(req, res));
     this.router?.post(this.path, validationMiddleware(UserDto), async (req, res) => this.userController?.addUser(req, res));
     this.router?.delete(`${this.path}/:email`, async (req, res) => this.userController?.deleteUser(req, res));
     this.router?.post(`${this.path}/github/:access_token`, async (req, res) => this.userController?.saveGithubUser(req, res));
-    // this.router?.put(`${this.path}/:email`)
   }
 
 }
