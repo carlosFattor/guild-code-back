@@ -5,7 +5,7 @@ import { Request, Response } from "express";
 import UserService from "./UserService";
 import HttpException from "../exceptions/HttpException";
 import UserUtil from "./UserUtils";
-import { IUser } from "./base/IUser";
+import RequestWithUser from "types/requestWithUser.interface";
 
 export default class UserController {
 
@@ -69,7 +69,7 @@ export default class UserController {
         }
 
         const temp = this.userUtils?.fillUser(gitUserInfo);
-        if (!temp) throw new HttpException(HttpStatus.BAD_REQUEST, 'Error trying map github user')
+        if (!temp) throw new HttpException(HttpStatus.BAD_REQUEST, "Error trying map github user");
 
         const newUser = await this.userService?.add(temp);
         if (newUser) {
@@ -84,14 +84,38 @@ export default class UserController {
     }
   }
 
-  async addTags(req: Request, res: Response) {
+  async addTags(req: RequestWithUser, res: Response) {
     try {
       const { email, tags } = req.body;
-      await this.userService.updateTags(email, tags);
+      await this.userService?.updateTags(email, tags);
       res.status(HttpStatus.NO_CONTENT).end();
     } catch (error) {
       res.status(error.status).json(error);
     }
   }
 
+  async refreshToken(req: RequestWithUser, res: Response) {
+    debugger;
+    try {
+      const headers = req.headers;
+      if (headers && headers.authorization) {
+        debugger;
+        const token = req.body.refreshToken;
+        const verificationResponse = this.userUtils?.verifyToken(token);
+        const id = verificationResponse?._id;
+        if (id) {
+          const user = await this.userService?.findUserById(id);
+          if (user) {
+            const tokens = this.userUtils?.createToken(user);
+            res.status(200).json({ tokens });
+            return;
+          }
+          throw new HttpException(HttpStatus.NOT_FOUND, "User not found");
+        }
+        throw new HttpException(HttpStatus.NOT_FOUND, "User not found");
+      }
+    } catch (error) {
+      res.status(error.status).json(error);
+    }
+  }
 }

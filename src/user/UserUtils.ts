@@ -36,4 +36,9 @@ export default class UserUtil {
       token: jwt.sign(dataStoredInToken, secret, { expiresIn: expiresToken }),
     };
   }
+
+  verifyToken(token: string): DataStoredInToken {
+    const secret = this.ENV.getSecret();
+    return jwt.verify(token, secret) as DataStoredInToken;
+  }
 }

@@ -22,6 +22,14 @@ export default class UserService {
     }
   }
 
+  async findUserById(id: string): Promise<IUser | null> {
+    try {
+      return await User.findById(id);
+    } catch (error) {
+      throw new HttpException(HttpStatus.NOT_FOUND, error.message);
+    }
+  }
+
   async findByEmail(email: string): Promise<IUser | null> {
     try {
       const query = { email };
@@ -82,11 +90,12 @@ export default class UserService {
     }
   }
 
-  async updateTags(email: string, tags: [string]): Promise<string[]> {
+  async updateTags(email: string, tags: [string]): Promise<string[] | undefined> {
     try {
       const query = { email };
       const doc = await User.findOneAndUpdate(query, { tags });
-      return doc.tags;
+
+      return doc?.tags;
 
     } catch (error) {
       throw new HttpException(HttpStatus.CONFLICT, "Was not possible to update tag\'s!");

@@ -53,7 +53,7 @@ export class ExpressServer {
   private setupSecurityMiddleware(server: Express) {
 
     const options: cors.CorsOptions = {
-      allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "X-Access-Token"],
+      allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"],
       origin: [
         "http://localhost:4200",
         "http://localhost:3000"

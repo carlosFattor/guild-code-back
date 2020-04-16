@@ -1,21 +1,23 @@
-import { NextFunction, Response, Request } from "express";
+import { NextFunction, Response } from "express";
 import * as jwt from "jsonwebtoken";
 import AuthenticationTokenMissingException from "../exceptions/AuthenticationTokenMissingException";
 import WrongAuthenticationTokenException from "../exceptions/WrongAuthenticationTokenException";
 import DataStoredInToken from "../types/dataStoredInToken";
 import userModel from "../user/UserModel";
 import { Environment } from "../Environment";
+import RequestWithUser from "types/requestWithUser.interface";
 
-async function authMiddleware(request: Request, response: Response, next: NextFunction) {
+async function authMiddleware(request: RequestWithUser, response: Response, next: NextFunction) {
   const secret = new Environment().getSecret();
-  const cookies = request.cookies;
-  if (cookies && cookies.Authorization) {
+  const headers = request.headers;
+  if (headers && headers.authorization) {
     try {
-      const verificationResponse = jwt.verify(cookies.Authorization, secret) as DataStoredInToken;
+      const token = headers.authorization.split(" ")[1];
+      const verificationResponse = jwt.verify(token, secret) as DataStoredInToken;
       const id = verificationResponse._id;
       const user = await userModel.findById(id);
       if (user) {
-        // request.user = user;
+        request.user = user;
         next();
       } else {
         next(new WrongAuthenticationTokenException());
