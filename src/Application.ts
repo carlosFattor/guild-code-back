@@ -1,6 +1,6 @@
 import "reflect-metadata";
-import { ExpressServer } from "./ExpressServer";
-import { Environment } from "./Environment";
+import ExpressServer from "./ExpressServer";
+import Environment from "./Environment";
 import MongoConnection from "./db/MongoConnection";
 
 export class Application {

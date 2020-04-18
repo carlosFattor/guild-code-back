@@ -1,13 +1,13 @@
 import * as dotenv from "dotenv";
 
-export class Environment {
+export default class Environment {
 
   constructor() {
     dotenv.config();
   }
 
   public getPort(): number {
-    return (process.env.PORT as any) || 3000;
+    return parseInt(process.env.PORT || "3000");
   }
 
   public getMongoUser(): string | undefined {
@@ -32,6 +32,10 @@ export class Environment {
 
   public getClientSecret(): string {
     return process.env.CLIENT_SECRET || "";
+  }
+
+  public getDevelopmentStatus(): boolean {
+    return (/true/i).test(process.env.DEVELOPMENT || "false");
   }
 
 }

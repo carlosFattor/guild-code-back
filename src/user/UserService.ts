@@ -3,7 +3,7 @@ import User from "./UserModel";
 import { IUser } from "./base/IUser";
 import IGithubUser from "./base/IGithubUser";
 import HttpException from "../exceptions/HttpException";
-import { Environment } from "../Environment";
+import Environment from "../Environment";
 import * as HttpStatus from "http-status-codes";
 
 export default class UserService {
@@ -18,7 +18,7 @@ export default class UserService {
     try {
       return await User.find({});
     } catch (error) {
-      throw new HttpException(HttpStatus.NOT_FOUND, error.message);
+      throw new HttpException(HttpStatus.NOT_FOUND, error.message, error);
     }
   }
 
@@ -26,7 +26,7 @@ export default class UserService {
     try {
       return await User.findById(id);
     } catch (error) {
-      throw new HttpException(HttpStatus.NOT_FOUND, error.message);
+      throw new HttpException(HttpStatus.NOT_FOUND, error.message, error);
     }
   }
 
@@ -39,7 +39,7 @@ export default class UserService {
       }
       return user;
     } catch (error) {
-      throw new HttpException(HttpStatus.NOT_FOUND, error.message);
+      throw new HttpException(HttpStatus.NOT_FOUND, error.message, error);
     }
   }
 
@@ -49,7 +49,7 @@ export default class UserService {
       const data = await temp.save();
       return data;
     } catch (error) {
-      throw new HttpException(HttpStatus.BAD_REQUEST, error.message);
+      throw new HttpException(HttpStatus.BAD_REQUEST, error.message, error);
     }
   }
 
@@ -70,7 +70,7 @@ export default class UserService {
         })
       ).data;
     } catch (error) {
-      throw new HttpException(403, "Token invalid");
+      throw new HttpException(403, "Token invalid", error);
     }
   }
 
@@ -86,7 +86,7 @@ export default class UserService {
         })
       ).data;
     } catch (error) {
-      throw new HttpException(HttpStatus.FORBIDDEN, "Token invalid");
+      throw new HttpException(HttpStatus.FORBIDDEN, "Token invalid", error);
     }
   }
 
@@ -98,7 +98,7 @@ export default class UserService {
       return doc?.tags;
 
     } catch (error) {
-      throw new HttpException(HttpStatus.CONFLICT, "Was not possible to update tag\'s!");
+      throw new HttpException(HttpStatus.CONFLICT, "Was not possible to update tag\'s!", error);
     }
   }
 

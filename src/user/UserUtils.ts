@@ -3,7 +3,7 @@ import IGithubUser from "./base/IGithubUser";
 import { IUser } from "./base/IUser";
 import TokenData from "types/tokenData.interface";
 import DataStoredInToken from "types/dataStoredInToken";
-import { Environment } from "../Environment";
+import Environment from "../Environment";
 import * as jwt from "jsonwebtoken";
 
 export default class UserUtil {

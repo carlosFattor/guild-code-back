@@ -21,11 +21,11 @@ export default class UserRouters implements BaseRouters {
   }
 
   loadRouter(): void {
-    this.router?.get(this.path, async (req, res) => this.userController?.fetchUsers(req, res));
-    this.router?.put(`${this.path}/tags`, authMiddleware, async (req, res) => this.userController?.addTags(req, res));
-    this.router?.post(this.path, authMiddleware, validationMiddleware(UserDto), async (req, res) => this.userController?.addUser(req, res));
-    this.router?.delete(`${this.path}/:email`, async (req, res) => this.userController?.deleteUser(req, res));
-    this.router?.post(`${this.path}/github/:access_token`, async (req, res) => this.userController?.saveGithubUser(req, res));
-    this.router?.post(`${this.path}/refresh`, async (req, res) => this.userController?.refreshToken(req, res));
+    this.router?.get(this.path, async (req, res, next) => this.userController?.fetchUsers(req, res, next));
+    this.router?.put(`${this.path}/tags`, authMiddleware, async (req, res, next) => this.userController?.addTags(req, res, next));
+    this.router?.post(this.path, authMiddleware, validationMiddleware(UserDto), async (req, res, next) => this.userController?.addUser(req, res, next));
+    this.router?.delete(`${this.path}/:email`, async (req, res, next) => this.userController?.deleteUser(req, res, next));
+    this.router?.post(`${this.path}/github/:access_token`, async (req, res, next) => this.userController?.saveGithubUser(req, res, next));
+    this.router?.post(`${this.path}/refresh`, async (req, res, next) => this.userController?.refreshToken(req, res, next));
   }
 }

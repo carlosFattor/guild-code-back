@@ -1,5 +1,6 @@
 import { Document } from "mongoose";
 
+// eslint-disable-next-line @typescript-eslint/interface-name-prefix
 export interface IUser {
   _id?: string;
   email: string;

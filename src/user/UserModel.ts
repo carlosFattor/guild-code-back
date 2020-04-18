@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import { Schema, model } from "mongoose";
 import { IUserDocument } from "./base/IUser";
 

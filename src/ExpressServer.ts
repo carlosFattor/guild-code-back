@@ -1,4 +1,4 @@
-import express, { Router } from "express";
+import express, { Router, Request, Response, NextFunction } from "express";
 import { Express } from "express";
 import { Server } from "http";
 import compress from "compression";
@@ -9,8 +9,10 @@ import * as bodyParser from "body-parser";
 import RateLimit from "express-rate-limit";
 import noCache from "nocache";
 import UserRouters from "./user/UserRouters";
+import errorMiddleware from "./middleware/ErrorMiddleware";
+import HttpException from "exceptions/HttpException";
 
-export class ExpressServer {
+export default class ExpressServer {
 
   private server?: Express
   private httpServer?: Server
@@ -53,7 +55,7 @@ export class ExpressServer {
   private setupSecurityMiddleware(server: Express) {
 
     const options: cors.CorsOptions = {
-      allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"],
+      allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Authorization"],
       origin: [
         "http://localhost:4200",
         "http://localhost:3000"
@@ -76,6 +78,9 @@ export class ExpressServer {
     );
     server.use(noCache());
     server.disable("x-powered-by");
+    server.use(function (error: HttpException, req: Request, res: Response, next: NextFunction) {
+      errorMiddleware(error, req, res, next);
+    });
   }
 
   loadRouters(router: Router) {
