@@ -14,6 +14,4 @@ export class UserDto implements IUser {
   @IsString()
   lastName?: string;
 
-  gender?: number;
-
 } 

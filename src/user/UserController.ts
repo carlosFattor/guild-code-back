@@ -17,6 +17,20 @@ export default class UserController {
     this.userUtils = new UserUtil();
   }
 
+  async updateLocation(req: RequestWithUser, res: Response, next: NextFunction): Promise<Response | undefined> {
+    try {
+      const latLng = req.body;
+      const user = req.user;
+      if (user) {
+        const userUpdated = await this.userService?.updateLocation(user, latLng);
+        return res.status(200).json({ userUpdated });
+      }
+      throw new HttpException(HttpStatus.NOT_FOUND, "User not found", null);
+    } catch (error) {
+      next(new HttpException(404, "It was impossible update the user", error));
+    }
+  }
+
   async fetchUsers(req: Request, res: Response, next: NextFunction): Promise<Response | undefined> {
     try {
       const data = await this.userService?.getAll();

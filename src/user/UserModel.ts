@@ -41,11 +41,19 @@ const UserSchema = new Schema({
   },
   tags: {
     type: [String]
+  },
+  loc: {
+    type: {
+      type: String,
+      enum: ["Point"]
+    },
+    coordinates: []
   }
 }, {
   timestamps: true,
 });
 
+UserSchema.index({ "loc": "2dsphere" });
 
 const User = model<IUserDocument>("User", UserSchema);
 export default User;

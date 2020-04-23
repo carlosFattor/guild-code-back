@@ -22,6 +22,18 @@ export default class UserService {
     }
   }
 
+  async updateLocation(user: IUser, latLng: { [key: string]: string }): Promise<boolean> {
+    const lat = latLng["lat"];
+    const lng = latLng["lng"];
+    const location = { type: "Point", coordinates: [lat, lng] };
+    const query = { email: user.email };
+    const update = { loc: location };
+
+    const userUpdated = await User.findOneAndUpdate(query, update);
+
+    return !!userUpdated?.loc;
+  }
+
   async findUserById(id: string): Promise<IUser | null> {
     try {
       return await User.findById(id);

@@ -13,6 +13,7 @@ export interface IUser {
   public_repos?: number;
   repos_url?: string;
   tags?: string[];
+  loc?: string[];
 }
 
 export type IUserDocument = IUser & Document;
