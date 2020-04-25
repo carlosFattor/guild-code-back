@@ -21,12 +21,13 @@ export default class UserRouters implements BaseRouters {
   }
 
   loadRouter(): void {
-    this.router?.get(this.path, async (req, res, next) => this.userController?.fetchUsers(req, res, next));
+    this.router?.get(this.path, authMiddleware, async (req, res, next) => this.userController?.fetchUsers(req, res, next));
     this.router?.put(`${this.path}/tags`, authMiddleware, async (req, res, next) => this.userController?.addTags(req, res, next));
     this.router?.post(this.path, authMiddleware, validationMiddleware(UserDto), async (req, res, next) => this.userController?.addUser(req, res, next));
     this.router?.delete(`${this.path}/:email`, authMiddleware, async (req, res, next) => this.userController?.deleteUser(req, res, next));
     this.router?.post(`${this.path}/github/:access_token`, async (req, res, next) => this.userController?.saveGithubUser(req, res, next));
     this.router?.post(`${this.path}/refresh`, async (req, res, next) => this.userController?.refreshToken(req, res, next));
     this.router?.put(`${this.path}/latlng`, authMiddleware, async (req, res, next) => this.userController?.updateLocation(req, res, next));
+    this.router?.get(`${this.path}/:lat/:lng/:zoom`, async (req, res, next) => this.userController?.fetchUsersByLatLng(req, res, next));
   }
 }

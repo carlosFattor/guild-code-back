@@ -31,6 +31,21 @@ export default class UserController {
     }
   }
 
+  async fetchUsersByLatLng(req: Request, res: Response, next: NextFunction): Promise<Response | undefined> {
+    try {
+      const lat = req.params.lat;
+      const lng = req.params.lng;
+      const zoom = req.params.zoom;
+      const data = await this.userService?.fetchUserByLatLng(parseFloat(lat), parseFloat(lng), parseInt(zoom));
+      data?.forEach(user => {
+        user.loc?.coordinates.reverse();
+      });
+      return res.json(data);
+    } catch (error) {
+      next(new HttpException(404, error.message, error));
+    }
+  }
+
   async fetchUsers(req: Request, res: Response, next: NextFunction): Promise<Response | undefined> {
     try {
       const data = await this.userService?.getAll();
@@ -80,7 +95,9 @@ export default class UserController {
         const userExist = await this.userService?.findByEmail(gitUserInfo.email);
 
         if (userExist) {
-
+          if (userExist.loc) {
+            userExist.loc.coordinates.reverse();
+          }
           const tokenData = this.userUtils?.createToken(userExist);
           return res.status(200).json({ userData: userExist, tokenData });
         }
@@ -90,7 +107,9 @@ export default class UserController {
 
         const newUser = await this.userService?.add(temp);
         if (newUser) {
-
+          if (newUser.loc) {
+            newUser.loc.coordinates.reverse();
+          }
           const tokenData = this.userUtils?.createToken(newUser);
           return res.status(200).json({ userData: newUser, tokenData });
         }

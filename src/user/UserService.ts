@@ -14,6 +14,23 @@ export default class UserService {
     this.environment = new Environment();
   }
 
+  async fetchUserByLatLng(lat: number, lng: number, zoom: number): Promise<IUser[]> {
+    try {
+      const positions = [1, 1, 3, 5, 10, 20, 40, 70, 130, 210, 450, 1000, 1500, 2000, 3000, 5000, 7000, 10000].reverse();
+      zoom = positions[zoom];
+      const radius = zoom / 3963.2;
+      const data = await User.find(
+        {
+          loc: { $geoWithin: { $centerSphere: [[lng, lat], radius] } }
+        }
+      );
+
+      return data;
+    } catch (error) {
+      throw new HttpException(HttpStatus.NOT_FOUND, error.message, error);
+    }
+  }
+
   async getAll(): Promise<IUser[]> {
     try {
       return await User.find({});
@@ -22,16 +39,24 @@ export default class UserService {
     }
   }
 
-  async updateLocation(user: IUser, latLng: { [key: string]: string }): Promise<boolean> {
-    const lat = latLng["lat"];
-    const lng = latLng["lng"];
-    const location = { type: "Point", coordinates: [lat, lng] };
-    const query = { email: user.email };
-    const update = { loc: location };
+  async updateLocation(user: IUser, latLng: { [key: string]: string }): Promise<IUser> {
+    try {
+      const lat = latLng["lat"];
+      const lng = latLng["lng"];
+      const location = { type: "Point", coordinates: [lng, lat] };
+      const query = { email: user.email };
+      const update = { loc: location };
 
-    const userUpdated = await User.findOneAndUpdate(query, update);
+      const userUpdated = await User.findOneAndUpdate(query, update, { new: true });
 
-    return !!userUpdated?.loc;
+      if (userUpdated) {
+        userUpdated.loc?.coordinates.reverse();
+        return userUpdated;
+      }
+      throw new HttpException(HttpStatus.BAD_REQUEST, "It was impossible to update user position", null);
+    } catch (error) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, error.message, error);
+    }
   }
 
   async findUserById(id: string): Promise<IUser | null> {

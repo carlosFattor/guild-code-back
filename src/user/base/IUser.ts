@@ -1,4 +1,5 @@
 import { Document } from "mongoose";
+import { Location } from "./ILocation.interface";
 
 // eslint-disable-next-line @typescript-eslint/interface-name-prefix
 export interface IUser {
@@ -13,7 +14,7 @@ export interface IUser {
   public_repos?: number;
   repos_url?: string;
   tags?: string[];
-  loc?: string[];
+  loc?: Location;
 }
 
 export type IUserDocument = IUser & Document;
