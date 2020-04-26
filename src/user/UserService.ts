@@ -16,7 +16,7 @@ export default class UserService {
 
   async fetchUserByLatLng(lat: number, lng: number, zoom: number): Promise<IUser[]> {
     try {
-      const positions = [1, 1, 3, 5, 10, 20, 40, 70, 130, 210, 450, 1000, 1500, 2000, 3000, 5000, 7000, 10000].reverse();
+      const positions = [0.5, 0.5, 1, 3, 5, 10, 20, 40, 70, 130, 210, 450, 1000, 1500, 2000, 3000, 5000, 7000, 10000].reverse();
       zoom = positions[zoom];
       const radius = zoom / 3963.2;
       const data = await User.find(
