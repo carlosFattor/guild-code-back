@@ -8,7 +8,7 @@
     "lint": "eslint --fix ./src/*",
     "dev": "NODE_ENV=development ts-node-dev --respawn --transpileOnly src/index.ts",
     "dev:debug": "ts-node-dev --inspect=8181 --respawn --transpileOnly src/index.ts",
-    "build": "rimraf ./build && tsc"
+    "build": "rimraf ./build && NODE_ENV=production tsc"
   },
   "keywords": [
     "nodejs",
