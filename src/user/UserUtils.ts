@@ -20,7 +20,7 @@ export default class UserUtil {
       blog: gitInfo.name,
       gitId: gitInfo.id,
       public_repos: gitInfo.public_repos,
-      repos_url: gitInfo.name,
+      repos_url: gitInfo.name
     };
   }
 
@@ -40,5 +40,12 @@ export default class UserUtil {
   verifyToken(token: string): DataStoredInToken {
     const secret = this.ENV.getSecret();
     return jwt.verify(token, secret) as DataStoredInToken;
+  }
+
+  formatTokenUserData(user: IUser): TokenData | undefined {
+    if (user.loc && user.loc.coordinates) {
+      user.loc.coordinates.reverse();
+    }
+    return this.createToken(user);
   }
 }

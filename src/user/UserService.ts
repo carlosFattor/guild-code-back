@@ -74,7 +74,7 @@ export default class UserService {
       if (!user) {
         return null;
       }
-      return user;
+      return user.getSimpleUSer();
     } catch (error) {
       throw new HttpException(HttpStatus.NOT_FOUND, error.message, error);
     }
@@ -84,7 +84,7 @@ export default class UserService {
     try {
       const temp = new User(user);
       const data = await temp.save();
-      return data;
+      return data.getSimpleUSer();
     } catch (error) {
       throw new HttpException(HttpStatus.BAD_REQUEST, error.message, error);
     }

@@ -15,6 +15,11 @@ export interface IUser {
   repos_url?: string;
   tags?: string[];
   loc?: Location;
+  roles?: string[];
 }
 
-export type IUserDocument = IUser & Document;
+export interface UserMethods {
+  getSimpleUSer(): IUser;
+}
+
+export type IUserDocument = IUser & UserMethods & Document;

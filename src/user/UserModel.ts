@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { Schema, model } from "mongoose";
 import { IUserDocument } from "./base/IUser";
+import { UserRoles } from "../domains/UserRoles";
 
 const UserSchema = new Schema({
   email: {
@@ -48,10 +49,27 @@ const UserSchema = new Schema({
       enum: ["Point"]
     },
     coordinates: []
+  },
+  roles: {
+    type: [String],
+    default: [UserRoles.USER]
   }
 }, {
   timestamps: true,
 });
+
+UserSchema.methods.getSimpleUSer = function () {
+  return {
+    _id: this._id,
+    email: this.email,
+    firstName: this.firstName,
+    avatar_url: this.avatar_url,
+    bio: this.bio,
+    blog: this.blog,
+    tags: this.tags,
+    loc: this.loc
+  };
+};
 
 UserSchema.index({ "loc": "2dsphere" });
 

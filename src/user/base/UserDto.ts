@@ -4,7 +4,8 @@ import { Location } from "./ILocation.interface";
 import { IUser } from "./IUser";
 
 
-export class UserDto implements IUser {
+export default class UserDto implements IUser {
+  _id = "";
 
   @IsEmail()
   email = "";
@@ -36,4 +37,7 @@ export class UserDto implements IUser {
   tags?: string[];
 
   loc?: Location;
+
+  roles?: string[] | undefined;
+
 } 

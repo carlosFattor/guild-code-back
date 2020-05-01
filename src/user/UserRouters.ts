@@ -1,9 +1,9 @@
 import { Router } from "express";
 import UserController from "./UserController";
 import BaseRouters from "../types/BaseRouters";
-import { UserDto } from "./base/UserDto";
+import UserDto from "./base/UserDto";
 import validationMiddleware from "../middleware/ValidationMiddleware";
-import authMiddleware from "../middleware/auth.middleware";
+import authMiddleware from "../middleware/AuthMiddleware";
 
 export default class UserRouters implements BaseRouters {
 

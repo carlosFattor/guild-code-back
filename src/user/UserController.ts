@@ -95,25 +95,19 @@ export default class UserController {
         const userExist = await this.userService?.findByEmail(gitUserInfo.email);
 
         if (userExist) {
-          if (userExist.loc) {
-            userExist.loc.coordinates.reverse();
-          }
-          const tokenData = this.userUtils?.createToken(userExist);
+          const tokenData = this.userUtils?.formatTokenUserData(userExist);
           return res.status(200).json({ userData: userExist, tokenData });
         }
 
         const temp = this.userUtils?.fillUser(gitUserInfo);
-        if (!temp) throw new HttpException(HttpStatus.BAD_REQUEST, "Error trying map github user", null);
+        if (!temp) throw new HttpException(HttpStatus.BAD_REQUEST, "Error trying to map github user", null);
 
         const newUser = await this.userService?.add(temp);
         if (newUser) {
-          if (newUser.loc) {
-            newUser.loc.coordinates.reverse();
-          }
-          const tokenData = this.userUtils?.createToken(newUser);
+          const tokenData = this.userUtils?.formatTokenUserData(newUser);
           return res.status(200).json({ userData: newUser, tokenData });
         }
-        throw new HttpException(HttpStatus.BAD_REQUEST, "Error trying map github user", null);
+        throw new HttpException(HttpStatus.BAD_REQUEST, "Error trying to map github user", null);
       }
     } catch (error) {
       next(error);
