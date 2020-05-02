@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "start": " NODE_ENV=production tsc && node ./dist/index.js",
+    "start": " NODE_ENV=production tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --fix ./src/*",
     "dev": "NODE_ENV=development ts-node-dev --respawn --transpileOnly src/index.ts",
