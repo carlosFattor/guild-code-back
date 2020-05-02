@@ -40,7 +40,7 @@ export default class NotifierController {
   async sendToSubscriber(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const notify: Notify = req.body;
-      WebPush.setVapidDetails("https://guild-code.com.br/", this.publicVapidKey, this.privateVapidKey);
+      WebPush.setVapidDetails("https://guild-code.netlify.app", this.publicVapidKey, this.privateVapidKey);
 
       const subs = await this.notifierService?.fetchAll();
       const notificationPayload = {
