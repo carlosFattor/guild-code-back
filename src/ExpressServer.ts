@@ -8,15 +8,16 @@ import cors from "cors";
 import * as bodyParser from "body-parser";
 import RateLimit from "express-rate-limit";
 import noCache from "nocache";
-import UserRouters from "./user/UserRouters";
+import UserRouters from "./context/user/UserRouters";
 import errorMiddleware from "./middleware/ErrorMiddleware";
 import HttpException from "exceptions/HttpException";
+import NotifierRoutes from "./context/notifier/NotifierRouters";
 
 export default class ExpressServer {
 
   private server?: Express
   private httpServer?: Server
-  private router = Router()
+  private router = Router();
 
   public setup(port: number) {
     this.loadRouters(this.router);
@@ -59,7 +60,9 @@ export default class ExpressServer {
       origin: [
         "http://localhost:4200",
         "http://localhost:8080",
-        "https://guild-code.netlify.app"
+        "https://guild-code.netlify.app",
+        "http://10.191.32.4:8080",
+        "http://192.168.15.13:8080"
       ],
       methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE"
     };
@@ -86,6 +89,10 @@ export default class ExpressServer {
 
   loadRouters(router: Router) {
     new UserRouters()
+      .setRouter(router)
+      .loadRouter();
+
+    new NotifierRoutes()
       .setRouter(router)
       .loadRouter();
   }

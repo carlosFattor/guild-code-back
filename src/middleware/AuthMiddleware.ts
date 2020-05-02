@@ -3,7 +3,7 @@ import * as jwt from "jsonwebtoken";
 import AuthenticationTokenMissingException from "../exceptions/AuthenticationTokenMissingException";
 import WrongAuthenticationTokenException from "../exceptions/WrongAuthenticationTokenException";
 import DataStoredInToken from "../types/dataStoredInToken";
-import userModel from "../user/UserModel";
+import userModel from "../context/user/UserModel";
 import Environment from "../Environment";
 import RequestWithUser from "types/requestWithUser.interface";
 

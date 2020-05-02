@@ -1,9 +1,9 @@
 import { Router } from "express";
 import UserController from "./UserController";
-import BaseRouters from "../types/BaseRouters";
+import BaseRouters from "../../types/BaseRouters";
 import UserDto from "./base/UserDto";
-import validationMiddleware from "../middleware/ValidationMiddleware";
-import authMiddleware from "../middleware/AuthMiddleware";
+import validationMiddleware from "../../middleware/ValidationMiddleware";
+import authMiddleware from "../../middleware/AuthMiddleware";
 
 export default class UserRouters implements BaseRouters {
 
@@ -21,6 +21,7 @@ export default class UserRouters implements BaseRouters {
   }
 
   loadRouter(): void {
+    this.router?.get(`${this.path}/health`, async (req, res) => this.userController?.getHealth(req, res));
     this.router?.get(this.path, authMiddleware, async (req, res, next) => this.userController?.fetchUsers(req, res, next));
     this.router?.put(`${this.path}/tags`, authMiddleware, async (req, res, next) => this.userController?.addTags(req, res, next));
     this.router?.post(this.path, authMiddleware, validationMiddleware(UserDto), async (req, res, next) => this.userController?.addUser(req, res, next));

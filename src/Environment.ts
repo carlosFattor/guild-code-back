@@ -38,4 +38,11 @@ export default class Environment {
     return (/true/i).test(process.env.DEVELOPMENT || "false");
   }
 
+  public getPublicVapidKey(): string {
+    return process.env.PUBLIC_VAPID_KEY || "";
+  }
+
+  public getPrivateVapidKey(): string {
+    return process.env.PRIVATE_VAPID_KEY || "";
+  }
 }

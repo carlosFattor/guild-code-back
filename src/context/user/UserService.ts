@@ -2,8 +2,8 @@ import axios from "axios";
 import User from "./UserModel";
 import { IUser } from "./base/IUser";
 import IGithubUser from "./base/IGithubUser";
-import HttpException from "../exceptions/HttpException";
-import Environment from "../Environment";
+import HttpException from "../../exceptions/HttpException";
+import Environment from "../../Environment";
 import * as HttpStatus from "http-status-codes";
 
 export default class UserService {

@@ -1,0 +1,33 @@
+import Environment from "../../Environment";
+import { ISubscription } from "domains/subscription/Subscription.interface";
+import Subscription from "./SubscriptionModel";
+import HttpException from "../../exceptions/HttpException";
+import * as HttpStatus from "http-status-codes";
+
+export default class NotifierService {
+
+  private environment: Environment | null = null;
+
+  constructor() {
+    this.environment = new Environment();
+  }
+
+  async addSubscription(sub: ISubscription): Promise<ISubscription> {
+    try {
+      const temp = new Subscription(sub);
+      const data = await temp.save();
+      return data;
+    } catch (error) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, error.message, error);
+    }
+  }
+
+  async fetchAll(): Promise<Array<ISubscription>> {
+    try {
+      const subs = await Subscription.find({});
+      return subs;
+    } catch (error) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, error.message, error);
+    }
+  }
+}

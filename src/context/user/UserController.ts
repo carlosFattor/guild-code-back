@@ -3,7 +3,7 @@
 import * as HttpStatus from "http-status-codes";
 import { Request, Response, NextFunction } from "express";
 import UserService from "./UserService";
-import HttpException from "../exceptions/HttpException";
+import HttpException from "../../exceptions/HttpException";
 import UserUtil from "./UserUtils";
 import RequestWithUser from "types/requestWithUser.interface";
 
@@ -15,6 +15,11 @@ export default class UserController {
   constructor() {
     this.userService = new UserService();
     this.userUtils = new UserUtil();
+  }
+
+  async getHealth(req: Request, res: Response): Promise<void> {
+
+    return res.status(HttpStatus.OK).end();
   }
 
   async updateLocation(req: RequestWithUser, res: Response, next: NextFunction): Promise<Response | undefined> {

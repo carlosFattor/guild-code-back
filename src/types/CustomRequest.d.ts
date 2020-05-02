@@ -1,5 +1,5 @@
 import 'express'
-import UserService from '../user/UserService'
+import UserService from '../context/user/UserService'
 
 export interface RequestServices {
   userService: UserService

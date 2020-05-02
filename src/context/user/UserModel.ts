@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { Schema, model } from "mongoose";
 import { IUserDocument } from "./base/IUser";
-import { UserRoles } from "../domains/UserRoles";
+import { UserRoles } from "../../domains/UserRoles";
 
 const UserSchema = new Schema({
   email: {
