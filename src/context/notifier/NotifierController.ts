@@ -5,6 +5,7 @@ import Environment from "../../Environment";
 import NotifierService from "./NotifierService";
 import HttpException from "../../exceptions/HttpException";
 import { Notify } from "../../domains/Notify";
+import { ISubscription } from "domains/subscription/Subscription.interface";
 
 export default class NotifierController {
 
@@ -27,9 +28,8 @@ export default class NotifierController {
 
   async saveSubscriber(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-
-      const sub = req.body;
-      await this.notifierService?.addSubscription(sub.subscription);
+      const sub: ISubscription = req.body;
+      await this.notifierService?.addSubscription(sub);
       return res.status(HttpStatus.OK).end();
 
     } catch (error) {

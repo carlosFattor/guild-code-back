@@ -2,6 +2,10 @@ import { Schema, model } from "mongoose";
 import { ISubscription } from "../../domains/subscription/Subscription.interface";
 
 const SubscriptionSchema = new Schema({
+  email: {
+    type: String,
+    unique: true
+  },
   endpoint: {
     type: String,
     required: true
