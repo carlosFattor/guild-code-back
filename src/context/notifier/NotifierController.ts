@@ -32,9 +32,9 @@ export default class NotifierController {
       if (email) {
         const notify = await this.notifierService?.verifySubscriber(email);
         if (notify) {
-          return res.status(HttpStatus.OK).end();
+          return res.status(HttpStatus.OK).json({ find: true });
         }
-        return res.status(HttpStatus.NOT_FOUND).end();
+        return res.status(HttpStatus.NO_CONTENT).end();
       }
       throw new HttpException(HttpStatus.NOT_FOUND, "Error trying get subscriber status", null);
     } catch (error) {
