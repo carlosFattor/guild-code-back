@@ -58,11 +58,7 @@ export default class ExpressServer {
     const options: cors.CorsOptions = {
       allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Authorization"],
       origin: [
-        "http://localhost:4200",
-        "http://localhost:8080",
         "https://guild-code.netlify.app",
-        "http://10.191.32.4:8080",
-        "http://192.168.15.13:8080"
       ],
       methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE"
     };

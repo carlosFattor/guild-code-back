@@ -44,7 +44,10 @@ export default class NotifierController {
 
   async saveSubscriber(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const sub: ISubscription = req.body;
+      const { subscription, email } = req.body;
+      const sub = {
+        ...subscription, email
+      };
       await this.notifierService?.addSubscription(sub);
       return res.status(HttpStatus.OK).end();
 
