@@ -48,6 +48,10 @@ export default class NotifierController {
       const sub = {
         ...subscriber, email
       };
+      const notify = await this.notifierService?.verifySubscriber(email);
+      if (notify) {
+        return res.status(HttpStatus.NO_CONTENT).end();
+      }
       await this.notifierService?.addSubscription(sub);
       return res.status(HttpStatus.OK).end();
 
