@@ -12,6 +12,15 @@ export default class NotifierService {
     this.environment = new Environment();
   }
 
+  async verifySubscriber(email: string): Promise<ISubscription | null> {
+    try {
+      const data = await Subscription.findOne({ email });
+      return data;
+    } catch (error) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, error.message, error);
+    }
+  }
+
   async addSubscription(sub: ISubscription): Promise<ISubscription> {
     try {
       const temp = new Subscription(sub);

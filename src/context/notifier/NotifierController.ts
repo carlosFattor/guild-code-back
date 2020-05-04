@@ -26,6 +26,22 @@ export default class NotifierController {
     return res.status(HttpStatus.OK).end();
   }
 
+  async verifySubscriber(req: Request, res: Response, next: NextFunction) {
+    try {
+      const email = req.params.email;
+      if (email) {
+        const notify = await this.notifierService?.verifySubscriber(email);
+        if (notify) {
+          return res.status(HttpStatus.OK).end();
+        }
+        return res.status(HttpStatus.NOT_FOUND).end();
+      }
+      throw new HttpException(HttpStatus.NOT_FOUND, "Error trying get subscriber status", null);
+    } catch (error) {
+      next(new HttpException(404, error.message, error));
+    }
+  }
+
   async saveSubscriber(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const sub: ISubscription = req.body;
