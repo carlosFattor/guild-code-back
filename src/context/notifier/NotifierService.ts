@@ -1,5 +1,5 @@
 import Environment from "../../Environment";
-import { ISubscription } from "domains/subscription/Subscription.interface";
+import { ISubscription, Subscriptions } from "../../domains/subscription/Subscription.interface";
 import Subscription from "./SubscriptionModel";
 import HttpException from "../../exceptions/HttpException";
 import * as HttpStatus from "http-status-codes";
@@ -26,6 +26,17 @@ export default class NotifierService {
       const temp = new Subscription(sub);
       const data = await temp.save();
       return data;
+    } catch (error) {
+      throw new HttpException(HttpStatus.BAD_REQUEST, error.message, error);
+    }
+  }
+
+  async updateSubscription(email: string, subscription: Subscriptions): Promise<ISubscription | null> {
+    try {
+      const query = { email };
+      const update = { $push: { subscriptions: subscription } };
+      const subUpdated = await Subscription.findOneAndUpdate(query, update);
+      return subUpdated;
     } catch (error) {
       throw new HttpException(HttpStatus.BAD_REQUEST, error.message, error);
     }

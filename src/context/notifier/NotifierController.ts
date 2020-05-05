@@ -5,7 +5,7 @@ import Environment from "../../Environment";
 import NotifierService from "./NotifierService";
 import HttpException from "../../exceptions/HttpException";
 import { Notify } from "../../domains/Notify";
-import { ISubscription } from "domains/subscription/Subscription.interface";
+import { ISubscription, Subscriptions } from "../../domains/subscription/Subscription.interface";
 
 export default class NotifierController {
 
@@ -44,13 +44,31 @@ export default class NotifierController {
 
   async saveSubscriber(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { subscriber, email } = req.body;
-      const sub = {
-        ...subscriber, email
+
+      const { subscriber, email, device } = req.body;
+      const subscription: Subscriptions = {
+        ...subscriber, device
       };
+
+      const sub = {
+        email,
+        subscriptions: [
+          subscription
+        ]
+      } as ISubscription;
+
       const notify = await this.notifierService?.verifySubscriber(email);
       if (notify) {
-        return res.status(HttpStatus.NO_CONTENT).end();
+
+        const channel = notify.subscriptions.filter(_sub => {
+          return _sub.device === subscription.device;
+        });
+
+        if (channel.length > 0) {
+          return res.status(HttpStatus.NO_CONTENT).end();
+        }
+        this.notifierService?.updateSubscription(email, subscription);
+        return res.status(HttpStatus.OK).end();
       }
       await this.notifierService?.addSubscription(sub);
       return res.status(HttpStatus.OK).end();
@@ -65,7 +83,7 @@ export default class NotifierController {
       const notify: Notify = req.body;
       WebPush.setVapidDetails("https://guild-code.netlify.app", this.publicVapidKey, this.privateVapidKey);
 
-      const subs = await this.notifierService?.fetchAll();
+      const notifier = await this.notifierService?.fetchAll();
       const notificationPayload = {
         "notification": {
           "title": notify.title,
@@ -84,14 +102,17 @@ export default class NotifierController {
           }]
         }
       };
-      if (subs) {
-        Promise.all(subs.map(sub => WebPush.sendNotification(
-          sub, JSON.stringify(notificationPayload))))
-          .then(() => res.status(HttpStatus.OK).json({ message: "Newsletter sent successfully." }))
-          .catch(err => {
-            console.error("Error sending notification, reason: ", err);
-            res.sendStatus(500);
-          });
+      if (notifier) {
+        notifier.forEach(subs => {
+          Promise.all(subs.subscriptions.map(sub => WebPush.sendNotification(
+            sub, JSON.stringify(notificationPayload))))
+            .then(() => res.status(HttpStatus.OK).json({ message: "Newsletter sent successfully." }))
+            .catch(err => {
+              console.error("Error sending notification, reason: ", err);
+              res.sendStatus(500);
+            });
+
+        });
       }
     } catch (error) {
       next(new HttpException(404, "It was impossible notifier the user", error));

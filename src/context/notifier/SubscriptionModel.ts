@@ -6,16 +6,18 @@ const SubscriptionSchema = new Schema({
     type: String,
     unique: true
   },
-  endpoint: {
-    type: String,
-    required: true
-  },
-  expirationTime: {
-    type: String
-  },
-  keys: {
-    p256dh: String,
-    auth: String
+
+  subscriptions: {
+    type: [{
+      endpoint: String,
+      expirationTime: String,
+      device: String,
+      keys: {
+        p256dh: String,
+        auth: String
+      }
+    }
+    ]
   }
 }, {
   timestamps: true,

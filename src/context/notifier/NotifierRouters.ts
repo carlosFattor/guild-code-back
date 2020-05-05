@@ -1,6 +1,7 @@
 import BaseRouters from "../../types/BaseRouters";
 import { Router } from "express";
 import NotifierController from "./NotifierController";
+import authMiddleware from "../../middleware/AuthMiddleware";
 
 export default class NotifierRoutes implements BaseRouters {
 
