@@ -59,6 +59,8 @@ export default class ExpressServer {
       allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Authorization"],
       origin: [
         "https://guild-code.netlify.app",
+        "https://www.guild-code.com.br",
+        "http://localhost:4200"
       ],
       methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE"
     };
