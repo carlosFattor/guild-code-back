@@ -1,10 +1,12 @@
 {
-  "subscription": {
-    "endpoint": "https://fcm.googleapis.com/fcm/send/fIBkgcO0Ncw:APA91bHIJCXngj-yat00FxeAfyNWS_N9DeFd_I1uZpJyBwbBihlS5cjHx43oGFYedZZE1cKv0NcUFULRYD42wpcIWgLBGF8ToZf5MW4yJmfE3mAcK0VJtzEIGIifebowFahavivribbP",
+  "subscriber": {
+    "endpoint": "https://fcm.googleapis.com/fcm/send/cwOOOEdCG_g:APA91bE89szHe5zqbZtMMWVwrXSGQHxcWpfxVQqTLroVicrmmya3YPqYS4fxIUx6hLSLwIc3CBwho3fnlh9b4LozfWVZzHUIsyIswHAop7bBBjABbfRM9m1CSfK8acyGz35rgN_DmYgE",
     "expirationTime": null,
     "keys": {
-      "p256dh": "BKNe9dMkNMuEeD1jKn9KDADHo25eF_ZXTtu74Ql15i-7ljFu6I3YKpYD-I2YTA8_ttCaQuXUPJvGpOfbB1lhUWI",
-      "auth": "qcafNskLJ1pQceUPJonpMA"
+      "p256dh": "BHBZDYsOWpuW6kGHcTrxCguPuoUl5iwRI6qCRYQIZPQki4JcyUcz8iPj6uJJQEg12N4in11TleMCHrff0PHXvbc",
+      "auth": "hiA83zkkmW6gYbkHojpJFg"
     }
-  }
+  },
+  "email": "carlos.fattor@gmail.com",
+  "device": "Chrome"
 }

@@ -31,7 +31,7 @@ export default class NotifierController {
       const email = req.params.email;
       const device = req.params.device;
       if (email && device) {
-        const notify = await this.notifierService?.verifySubscriber(email, device);
+        const notify = await this.notifierService?.verifySubscriberAndDevice(email, device);
         if (notify) {
           const subscription = notify.subscriptions.find(sub => {
             return sub.device === device;
@@ -61,7 +61,7 @@ export default class NotifierController {
         ]
       } as ISubscription;
 
-      const notify = await this.notifierService?.verifySubscriber(email, device);
+      const notify = await this.notifierService?.verifySubscriber(email);
       if (notify) {
 
         const channel = notify.subscriptions.filter(_sub => {
