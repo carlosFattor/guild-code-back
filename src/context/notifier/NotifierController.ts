@@ -61,7 +61,7 @@ export default class NotifierController {
         ]
       } as ISubscription;
 
-      const notify = await this.notifierService?.verifySubscriber(email);
+      const notify = await this.notifierService?.verifySubscriber(email, device);
       if (notify) {
 
         const channel = notify.subscriptions.filter(_sub => {
