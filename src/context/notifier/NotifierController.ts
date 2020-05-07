@@ -29,12 +29,16 @@ export default class NotifierController {
   async verifySubscriber(req: Request, res: Response, next: NextFunction) {
     try {
       const email = req.params.email;
-      if (email) {
-        const notify = await this.notifierService?.verifySubscriber(email);
+      const device = req.params.device;
+      if (email && device) {
+        const notify = await this.notifierService?.verifySubscriber(email, device);
         if (notify) {
-          return res.status(HttpStatus.OK).json({ find: true });
+          const subscription = notify.subscriptions.find(sub => {
+            return sub.device === device;
+          });
+          return res.status(HttpStatus.OK).json({ found: true, subscription });
         }
-        return res.status(HttpStatus.NO_CONTENT).end();
+        return res.status(HttpStatus.OK).json({ found: false });
       }
       throw new HttpException(HttpStatus.NOT_FOUND, "Error trying get subscriber status", null);
     } catch (error) {

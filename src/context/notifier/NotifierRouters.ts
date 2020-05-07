@@ -20,7 +20,7 @@ export default class NotifierRoutes implements BaseRouters {
 
   loadRouter(): void {
     this.router?.get(`${this.path}/health`, async (req, res) => this.notifierController?.getHealth(req, res));
-    this.router?.get(`${this.path}/subscriber/:email`, async (req, res, next) => this.notifierController?.verifySubscriber(req, res, next));
+    this.router?.get(`${this.path}/subscriber/:email/:device`, async (req, res, next) => this.notifierController?.verifySubscriber(req, res, next));
     this.router?.post(`${this.path}/subscriber`, async (req, res, next) => this.notifierController?.saveSubscriber(req, res, next));
     this.router?.post(`${this.path}/subscriber/notify`, async (req, res, next) => this.notifierController?.sendToSubscriber(req, res, next));
   }

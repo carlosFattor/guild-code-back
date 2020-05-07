@@ -15,6 +15,10 @@ const SubscriptionSchema = new Schema({
       keys: {
         p256dh: String,
         auth: String
+      },
+      status: {
+        type: Boolean,
+        default: true
       }
     }
     ]

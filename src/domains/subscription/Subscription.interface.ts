@@ -11,6 +11,7 @@ export interface Subscriptions {
   endpoint: string;
   expirationTime: string;
   keys: KeysSubscription;
+  status: boolean;
 }
 
 export type ISubscription = Subscription & Document 
